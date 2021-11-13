@@ -8,7 +8,7 @@ The web application will consist in **two simple pages**.
 The applicant is required to use Facebook login, to log the user in.
 
 
-## Meteo page:
+## Main page:
 The applicant must register for free on https://www.weatherapi.com/ to use as the data source.
 
 **For each of those cities:**  
