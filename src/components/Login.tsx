@@ -15,7 +15,7 @@ const Login = ({ test }: { test?: boolean | false }) => {
         <p>login</p> // render a default login text if test because <FacebookLogin/> is not testable
       ) : (
         <FacebookLogin
-          appId="289708003050601"
+          appId={process.env.REACT_APP_FACEBOOK_APP_ID!}
           autoLoad={true}
           fields="name,email,picture"
           callback={onLogin}

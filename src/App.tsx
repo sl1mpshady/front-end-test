@@ -18,9 +18,9 @@ const App = () => {
       const fetchData = async () => {
         const requests: Promise<AxiosResponse<any, any>>[] = cities.map(
           (city) =>
-            axios.get("https://api.weatherapi.com/v1/current.json", {
+            axios.get(`${process.env.REACT_APP_API_ROOT!}/current.json`, {
               params: {
-                key: "1263868ed54f4b12a1b133939211411",
+                key: process.env.REACT_APP_API_KEY!,
                 q: city,
                 aqi: "no",
               },
@@ -45,9 +45,9 @@ const App = () => {
   useEffect(() => {
     if (selectedCity !== undefined && selectedCity!?.forecasts?.length === 0) {
       axios
-        .get("https://api.weatherapi.com/v1/forecast.json", {
+        .get(`${process.env.REACT_APP_API_ROOT!}/forecast.json`, {
           params: {
-            key: "1263868ed54f4b12a1b133939211411",
+            key: process.env.REACT_APP_API_KEY!,
             q: selectedCity!?.city,
             aqi: "no",
             days: 3,
