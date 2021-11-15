@@ -1,44 +1,46 @@
 import React, { useState, useEffect } from "react";
 import axios, { AxiosResponse } from "axios";
+import { ReactFacebookLoginInfo } from "react-facebook-login";
 
+import { AuthContext } from "./context/authentication";
 import { GlobalContext } from "./context/global";
 
-import Header from "./components/Header";
-import WeatherCards from "./components/WeatherCards";
-import ForecastPopup from "./components/ForecastModal";
-
 import { cities } from "./constants";
+import Main from "./Main";
 
-function App() {
+const App = () => {
   const [cityWeathers, setCityWeathers] = useState<CityWeather[]>([]);
-
   const [selectedCity, setSelectedCity] = useState<CityWeather>();
+  const [user, setUser] = useState<ReactFacebookLoginInfo>();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const requests: Promise<AxiosResponse<any, any>>[] = cities.map((city) =>
-        axios.get("https://api.weatherapi.com/v1/current.json", {
-          params: {
-            key: "1263868ed54f4b12a1b133939211411",
-            q: city,
-            aqi: "no",
-          },
-        })
-      );
-      const cityWeathersTemp: CityWeather[] = await axios
-        .all(requests)
-        .then((response) =>
-          response.map(({ data }) => ({
-            city: data?.location?.name,
-            weather: data?.current,
-            forecasts: [],
-          }))
+    if (user !== undefined) {
+      const fetchData = async () => {
+        const requests: Promise<AxiosResponse<any, any>>[] = cities.map(
+          (city) =>
+            axios.get("https://api.weatherapi.com/v1/current.json", {
+              params: {
+                key: "1263868ed54f4b12a1b133939211411",
+                q: city,
+                aqi: "no",
+              },
+            })
         );
-      setCityWeathers(cityWeathersTemp);
-    };
+        const cityWeathersTemp: CityWeather[] = await axios
+          .all(requests)
+          .then((response) =>
+            response.map(({ data }) => ({
+              city: data?.location?.name,
+              weather: data?.current,
+              forecasts: [],
+            }))
+          );
+        setCityWeathers(cityWeathersTemp);
+      };
 
-    fetchData();
-  }, []);
+      fetchData();
+    }
+  }, [user]);
 
   useEffect(() => {
     if (selectedCity !== undefined && selectedCity!?.forecasts?.length === 0) {
@@ -90,16 +92,14 @@ function App() {
   }, [selectedCity, cityWeathers]);
 
   return (
-    <GlobalContext.Provider
-      value={{ cityWeathers, selectedCity, setSelectedCity }}
-    >
-      <div className="container">
-        <Header />
-        <WeatherCards />
-        {selectedCity !== undefined && <ForecastPopup />}
-      </div>
-    </GlobalContext.Provider>
+    <AuthContext.Provider value={{ user, setUser }}>
+      <GlobalContext.Provider
+        value={{ cityWeathers, selectedCity, setSelectedCity }}
+      >
+        <Main />
+      </GlobalContext.Provider>
+    </AuthContext.Provider>
   );
-}
+};
 
 export default App;

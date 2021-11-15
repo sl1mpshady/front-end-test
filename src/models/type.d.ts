@@ -30,3 +30,21 @@ interface ForecastReponse {
   date: string;
   day: ForecastReponseDay;
 }
+
+interface User {
+  name: string;
+  email: string;
+  accessToken: string;
+  picture: UserPicture;
+  userID: string;
+  signedRequest: string;
+}
+
+interface UserPicture {
+  data: UserPictureData;
+}
+
+interface UserPictureData {
+  height: number;
+  url: string;
+}
