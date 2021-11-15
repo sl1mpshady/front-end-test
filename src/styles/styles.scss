@@ -1,0 +1,248 @@
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
+
+$primaryColor: #ffffff;
+$secondaryColor: #18283f;
+
+$grey: #bfbfbf;
+
+$dayBg: linear-gradient(180deg, #4aabfa, #2d679d);
+$nightBg: linear-gradient(180deg, #7e7e7e, #2f343c);
+
+@mixin value-style {
+  font-size: 1.25em;
+  color: $primaryColor;
+  position: relative;
+  display: flex;
+  font-weight: 500;
+  .degrees {
+    font-size: 12px;
+  }
+}
+
+@mixin main-temp-style {
+  font-size: 3em;
+  font-weight: 700;
+  color: $primaryColor;
+  text-shadow: 0px 1px #727272;
+  position: relative;
+  display: flex;
+  .degrees {
+    font-size: 30px;
+    color: $grey;
+  }
+}
+
+@mixin sub-details-style {
+  display: flex;
+  flex-direction: row;
+
+  gap: 20px;
+  .item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    .title {
+      font-weight: 300;
+      font-size: 12px;
+      color: $primaryColor;
+    }
+    .value {
+      @include value-style;
+    }
+  }
+}
+
+body {
+  height: 100vh;
+  font-family: "Ubuntu", sans-serif !important;
+  background: #c0d0e3;
+  margin: 0;
+
+  .container {
+    max-width: 1210px;
+    margin: auto;
+    padding: 2em 1em;
+  }
+
+  .hello-user {
+    display: flex;
+    flex-direction: row;
+    .image {
+      width: 50px;
+    }
+    .user {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      color: $secondaryColor;
+
+      .hello {
+        font-weight: 300;
+        font-size: 1.5em;
+      }
+      .name {
+        font-weight: 700;
+        font-size: 1.75em;
+      }
+    }
+  }
+  .weather-cards {
+    display: flex;
+    width: 100%;
+    margin-top: 50px;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .weather-card {
+    border-radius: 10px;
+    flex: 0 0 23%;
+    border: 1px solid gainsboro;
+    height: 150px;
+    background-color: #63a4ff;
+    padding: 80px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+    &.day {
+      background-image: $dayBg;
+    }
+    &.night {
+      background-image: $nightBg;
+    }
+    .temp {
+      @include main-temp-style;
+    }
+    .icon {
+      width: 90px;
+      height: 90px;
+      img {
+        filter: brightness(0) invert(1);
+        width: 100%;
+      }
+    }
+    .text {
+      font-size: 1em;
+      color: $primaryColor;
+      text-shadow: 0px 1px #727272;
+    }
+    .city {
+      color: $primaryColor;
+    }
+    .sub-details {
+      @include sub-details-style;
+      margin-top: 20px;
+    }
+  }
+
+  .modal {
+    display: flex;
+    position: fixed;
+    perspective: 2000px;
+    transform-origin: center center;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    vertical-align: middle;
+    padding: 1em;
+    background-color: rgba(0, 0, 0, 0.85);
+    justify-content: center;
+    align-items: center;
+
+    .body {
+      position: absolute;
+      width: 570px;
+      z-index: 1;
+      text-align: left;
+      background: #fff;
+      border: none;
+      box-shadow: 1px 3px 3px 0 rgb(0, 0, 0 / 20%),
+        1px 3px 15px 2px rgb(0, 0, 0 / 20%);
+      transform-origin: 50% 25%;
+      flex: 0 0 auto;
+      border-radius: 20px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .weather-card {
+        border: 0 !important;
+        background: unset !important;
+      }
+
+      .forecasts {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        .day-forecast {
+          width: 90%;
+          background-color: rgba(0, 0, 0, 0.1);
+          border-radius: 10px;
+          padding: 10px 20px;
+          display: flex;
+          flex-direction: column;
+          backdrop-filter: blur(10px);
+
+          .condition {
+            color: #ffffff;
+            font-weight: 500;
+          }
+
+          .details {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            > div {
+              flex: 1;
+            }
+            .date-info {
+              .day {
+                color: $primaryColor;
+              }
+              .date {
+                color: $grey;
+                font-size: 12px;
+              }
+            }
+            .temp {
+              @include main-temp-style;
+              font-size: 2.5em;
+              .degrees {
+                font-size: 20px;
+              }
+            }
+            .others {
+              flex: 2;
+              .sub-details {
+                @include sub-details-style;
+                .item {
+                  flex: 1;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      &.day {
+        background-image: $dayBg;
+      }
+      &.night {
+        background-image: $nightBg;
+      }
+    }
+  }
+}
